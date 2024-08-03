@@ -1,0 +1,20 @@
+$font: #ffffff;
+$input: #333333;
+$background-light: #323232;
+$background: #212121;
+$background-dark: #171717;
+$orange: #ff7100;
+
+code {
+    background-color: $background-dark;
+    border: 1px solid $font;
+    border-radius: 3px;
+    padding: 0.05em 0.4em;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.95em;
+    color: $font;
+}
+
+button:hover {
+    border-color: $orange;
+}
