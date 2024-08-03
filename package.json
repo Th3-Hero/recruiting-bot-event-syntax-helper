@@ -1,9 +1,11 @@
 {
-  "name": "mql",
+  "name": "recruiting-bot-event-syntax-helper",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -13,6 +15,7 @@
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@tsconfig/svelte": "^5.0.4",
     "@types/sortablejs": "^1.15.8",
+    "gh-pages": "^6.1.1",
     "sass": "^1.77.8",
     "svelte": "^4.2.18",
     "svelte-check": "^3.8.4",
