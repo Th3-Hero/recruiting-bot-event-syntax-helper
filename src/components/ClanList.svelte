@@ -18,7 +18,9 @@ rvng
             .split(/[\n,]+/)
             .map(item => item.trim())
             .filter(item => item.length > 0);
-        console.log(itemsArray);
+        let string = `clan matches (${itemsArray.join(" or ")})`;
+        navigator.clipboard.writeText(string);
+        console.log(string);
     }
 </script>
 

@@ -46,6 +46,7 @@
             return;
         }
         let string = `vote matches (${condition})`;
+        navigator.clipboard.writeText(string);
         console.log(string);
     };
 
@@ -118,7 +119,7 @@
     </ul>
 </div>
 
-<button id="log-button" on:click={copyEventCondition}>Copy Event Condition</button>
+<button class="copy-button" on:click={copyEventCondition}>Copy Event Condition</button>
 
 <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
