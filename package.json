@@ -4,27 +4,30 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "generate-parser": "java -jar ./src/parser/gen/antlr-4.13.2-complete.jar -Dlanguage=TypeScript -o ./src/parser ./src/parser/gen/EventCondition.g4",
     "predeploy": "yarn run build",
     "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json",
+    "test": "vitest"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@tsconfig/svelte": "^5.0.4",
-    "@types/sortablejs": "^1.15.8",
     "gh-pages": "^6.1.1",
     "sass": "^1.77.8",
     "svelte": "^4.2.18",
     "svelte-check": "^3.8.4",
+    "svelte-dnd-action": "^0.9.49",
     "tslib": "^2.6.3",
     "typescript": "^5.2.2",
-    "vite": "^5.3.4"
+    "vite": "^5.3.4",
+    "vitest": "^2.0.5"
   },
   "dependencies": {
-    "sortablejs": "^1.15.2",
-    "svelte-dnd-action": "^0.9.49"
+    "@types/antlr4": "^4.11.6",
+    "antlr4": "^4.13.2"
   }
 }

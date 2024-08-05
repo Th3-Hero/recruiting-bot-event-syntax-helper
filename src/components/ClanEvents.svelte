@@ -1,19 +1,36 @@
 <script lang="ts">
     import './shared.scss';
+    import { type DndEvent, dndzone, type Item } from 'svelte-dnd-action';
+    import { flip } from "svelte/animate";
+    import { buildCondition, EventType, isValidClanTag } from "../lib/lib";
     import { onMount } from "svelte";
-    import Sortable from "sortablejs";
-    import { isValidClanTag, isValidBrackets } from "./lib";
 
-    let items = ['TEACH', 'or', 'FINES'];
-    const options = ['(', ')', 'and', 'or', 'equals'];
+    let items: Item[] = [
+        {id: 1, name: "TEACH"},
+        {id: 2, name: "or"},
+        {id: 3, name: "FINES"}
+    ];
+    const flipDurationMs = 300;
+    const options = ['(', ')', 'and', 'or'];
     let clanTag = "";
-    let sortable: Sortable;
+    let condition: string;
 
-    const addItem = (option: string) => {
-        items = [...items, option];
+    const handleDndConsider = (e: CustomEvent<DndEvent>) => {
+        items = e.detail.items;
     };
 
-    const addPlayerName = () => {
+    const handleDndFinalize = (e: CustomEvent<DndEvent>) => {
+        items = e.detail.items;
+        sortableUpdate();
+    };
+
+    const addItem = (name: string) => {
+        const newId = items.length ? Math.max(...items.map(item => item.id)) + 1 : 1;
+        items = [...items, {id: newId, name}];
+        sortableUpdate();
+    };
+
+    const addClanTag = () => {
         if (clanTag.trim() === "") {
             return;
         }
@@ -21,30 +38,18 @@
             alert("Invalid clan tag. Clan tags are between 2 and 5 characters long and contain only letters, numbers, underscores, and dashes.");
             return;
         }
-        items = [...items, clanTag];
+        addItem(clanTag);
         clanTag = "";
     };
 
     const removeItem = (index: number) => {
         items = items.filter((_, i) => i !== index);
+        sortableUpdate();
     };
 
     const copyEventCondition = () => {
-        let condition = "";
-        for (let item of sortable.toArray()) {
-            if (item === "or" || item === "equals") {
-                condition += ` ${item} `;
-            } else {
-                condition += item;
-            }
-        }
-        if (!isValidBrackets(condition)) {
-            alert("Invalid brackets. Please make sure every bracket has a matching pair.");
-            return;
-        }
-        let string = `clan matches (${condition})`;
-        navigator.clipboard.writeText(string);
-        console.log(string);
+        navigator.clipboard.writeText(condition);
+        console.log(condition);
     };
 
     const getItemClass = (item: string) => {
@@ -57,20 +62,16 @@
         }
     };
 
-    onMount(() => {
-        const el: HTMLElement | null = document.getElementById("sortable-list");
-        if (el === null) {
-            return;
+    const sortableUpdate = () => {
+        try {
+            condition = buildCondition(items.map(item => item.name), EventType.CLAN);
+        } catch (e: any) {
+            condition = e.message;
         }
-        sortable = Sortable.create(el, {
-            animation: 150,
-            chosenClass: "chosen",
-            dragClass: "drag",
-            direction: "horizontal"
-        });
-    });
-</script>
+    }
 
+    onMount(() => sortableUpdate());
+</script>
 
 <div class="container">
     <div class="controls">
@@ -87,13 +88,14 @@
             {/if}
         {/each}
         <input type="text" bind:value={clanTag} placeholder="Enter a clan tag"/>
-        <button on:click={addPlayerName}>Add Clan</button>
+        <button on:click={addClanTag}>Add Clan</button>
     </div>
 
-    <ul id="sortable-list">
-        {#each items as item, index}
-            <li data-id={item} class={getItemClass(item)}>
-                {item}
+    <ul id="sortable-list" use:dndzone="{{items, flipDurationMs}}" on:consider="{handleDndConsider}"
+        on:finalize="{handleDndFinalize}">
+        {#each items as item, index (item.id)}
+            <li class={getItemClass(item.name)} animate:flip="{{duration: flipDurationMs}}">
+                {item.name}
                 <button class="remove-button" on:click={() => removeItem(index)}>
                     <span class="material-symbols-outlined">close</span>
                 </button>
@@ -101,6 +103,8 @@
         {/each}
     </ul>
 </div>
+
+<code class="copy-preview">{condition}</code>
 
 <button class="copy-button" on:click={copyEventCondition}>Copy Event Condition</button>
 

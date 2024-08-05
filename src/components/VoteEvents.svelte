@@ -1,21 +1,43 @@
 <script lang="ts">
     import './shared.scss';
+    import { type DndEvent, dndzone, type Item } from 'svelte-dnd-action';
+    import { flip } from "svelte/animate";
+    import { buildCondition, EventType, generateListCondition, isValidPlayerName } from "../lib/lib";
     import { onMount } from "svelte";
-    import Sortable from "sortablejs";
-    import { isValidPlayerName, isValidBrackets } from "./lib";
 
-    let items = ["Mascot NA", "or", "Mascot EU"];
-    const options = ["(", ")", "or", "equals"];
+    let items: Item[] = [
+        {id: 1, name: "Mascot NA"},
+        {id: 2, name: "or"},
+        {id: 3, name: "Mascot EU"}
+    ];
+    const flipDurationMs = 300;
+    const options = ["(", ")", "or"];
     let playerName = "";
     let playerRegion = "";
-    let sortable: Sortable;
+    let condition: string;
 
-    const addItem = (option: string) => {
-        items = [...items, option];
+    const handleDndConsider = (e: CustomEvent<DndEvent>) => {
+        items = e.detail.items;
+    };
+
+    const handleDndFinalize = (e: CustomEvent<DndEvent>) => {
+        items = e.detail.items;
+        sortableUpdate();
+    };
+
+    const addItem = (name: string) => {
+        const newId = items.length ? Math.max(...items.map(item => item.id)) + 1 : 1;
+        items = [...items, {id: newId, name}];
+        sortableUpdate();
     };
 
     const addPlayerName = () => {
         if (playerName.trim() === "") {
+            alert("Cannot add player with no name.");
+            return;
+        }
+        if (playerRegion.trim() === "") {
+            alert("Cannot add player with no region");
             return;
         }
         if (!isValidPlayerName(playerName)) {
@@ -23,31 +45,18 @@
             return;
         }
 
-        const card = `${playerName} ${playerRegion}`;
-        items = [...items, card];
+        addItem(`${ playerName } ${ playerRegion }`);
         playerName = "";
     };
 
     const removeItem = (index: number) => {
         items = items.filter((_, i) => i !== index);
+        sortableUpdate();
     };
 
     const copyEventCondition = () => {
-        let condition = "";
-        for (let item of sortable.toArray()) {
-            if (item === "or" || item === "equals") {
-                condition += ` ${item} `;
-            } else {
-                condition += item;
-            }
-        }
-        if (!isValidBrackets(condition)) {
-            alert("Invalid brackets. Please make sure every bracket has a matching pair.");
-            return;
-        }
-        let string = `vote matches (${condition})`;
-        navigator.clipboard.writeText(string);
-        console.log(string);
+        navigator.clipboard.writeText(condition);
+        console.log(condition);
     };
 
     const getItemClass = (item: string) => {
@@ -60,18 +69,15 @@
         }
     };
 
-    onMount(() => {
-        const el: HTMLElement | null = document.getElementById("sortable-list");
-        if (el === null) {
-            return;
+    const sortableUpdate = () => {
+        try {
+            condition = buildCondition(items.map(item => item.name), EventType.VOTE);
+        } catch (e: any) {
+            condition = e.message;
         }
-        sortable = Sortable.create(el, {
-            animation: 150,
-            chosenClass: "chosen",
-            dragClass: "drag",
-            direction: "horizontal"
-        });
-    });
+    }
+
+    onMount(() => sortableUpdate());
 </script>
 
 <style>
@@ -107,10 +113,11 @@
         <button on:click={addPlayerName}>Add Player</button>
     </div>
 
-    <ul id="sortable-list">
-        {#each items as item, index}
-            <li data-id={item} class={getItemClass(item)}>
-                {item}
+    <ul id="sortable-list" use:dndzone="{{items, flipDurationMs}}" on:consider="{handleDndConsider}"
+        on:finalize="{handleDndFinalize}">
+        {#each items as item, index (item.id)}
+            <li class={getItemClass(item.name)} animate:flip="{{duration: flipDurationMs}}">
+                {item.name}
                 <button class="remove-button" on:click={() => removeItem(index)}>
                     <span class="material-symbols-outlined">close</span>
                 </button>
@@ -118,6 +125,8 @@
         {/each}
     </ul>
 </div>
+
+<code class="copy-preview">{condition}</code>
 
 <button class="copy-button" on:click={copyEventCondition}>Copy Event Condition</button>
 

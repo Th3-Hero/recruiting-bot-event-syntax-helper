@@ -18,12 +18,14 @@ input:focus {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    max-width: 100%;
 }
 
 .controls {
     display: flex;
     flex-direction: column;
     margin-right: 20px;
+    min-width: 12%;
 }
 
 .controls button, .controls input {
@@ -85,4 +87,8 @@ input:focus {
 
 .parenthesis {
     border: 1px solid tomato;
+}
+
+.copy-preview {
+    margin-bottom: 15px;
 }
