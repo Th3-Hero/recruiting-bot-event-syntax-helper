@@ -65,7 +65,7 @@
         } else if (options.includes(item)) {
             return "operator";
         } else {
-            return "clan";
+            return "text";
         }
     };
 
@@ -89,7 +89,7 @@
 
 <div class="description"></div>
 
-<div class="container">
+<div class="page-container">
     <div class="controls">
         <div class="bracket-buttons">
             {#each options as option}
@@ -113,22 +113,26 @@
         <button on:click={addPlayerName}>Add Player</button>
     </div>
 
-    <ul id="sortable-list" use:dndzone="{{items, flipDurationMs}}" on:consider="{handleDndConsider}"
-        on:finalize="{handleDndFinalize}">
-        {#each items as item, index (item.id)}
-            <li class={getItemClass(item.name)} animate:flip="{{duration: flipDurationMs}}">
-                {item.name}
-                <button class="remove-button" on:click={() => removeItem(index)}>
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </li>
-        {/each}
-    </ul>
+    <div class="container">
+        <ul class="sortable-list" use:dndzone="{{items, flipDurationMs}}" on:consider="{handleDndConsider}"
+            on:finalize="{handleDndFinalize}">
+            {#each items as item, index (item.id)}
+                <li class={getItemClass(item.name)} animate:flip="{{duration: flipDurationMs}}">
+                    {item.name}
+                    <button class="remove-button" on:click={() => removeItem(index)}>
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </li>
+            {/each}
+        </ul>
+
+        <code class="copy-preview">{condition}</code>
+
+        <button class="copy-button" on:click={copyEventCondition}>Copy Event Condition</button>
+    </div>
+
 </div>
 
-<code class="copy-preview">{condition}</code>
-
-<button class="copy-button" on:click={copyEventCondition}>Copy Event Condition</button>
 
 <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>

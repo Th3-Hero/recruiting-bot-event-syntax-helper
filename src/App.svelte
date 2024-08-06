@@ -14,17 +14,20 @@
 
 </script>
 
-<style>
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+<style lang="scss">
+    @import "./theme";
+    .main-container {
         height: 100vh;
+        width: 100vw;
     }
 
-    .buttons {
+    .navbar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin-bottom: 20px;
+        border: 3px solid;
+        border-color: transparent transparent $font transparent;
     }
 
     button {
@@ -34,8 +37,8 @@
     }
 </style>
 
-<div class="container">
-    <div class="buttons">
+<div class="main-container">
+    <div class="navbar">
         <button on:click={showClanList}>Go to Clan List</button>
         <button on:click={showClanEvents}>Go to Clan Events</button>
         <button on:click={showVoteEvents}>Go to Vote Events</button>

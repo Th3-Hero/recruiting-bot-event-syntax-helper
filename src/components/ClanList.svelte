@@ -26,7 +26,7 @@ rvng
 
         for (const item of items) {
             if (!isValidClanTag(item)) {
-                condition = `Invalid clan tag "${item}". Clan tags are between 2 and 5 characters long and contain only letters, numbers, underscores, and dashes.`
+                condition = `Invalid clan tag "${ item }". Clan tags are between 2 and 5 characters long and contain only letters, numbers, underscores, and dashes.`
                 return;
             }
         }
@@ -43,7 +43,7 @@ rvng
             .split(/[\n,]+/)
             .map(item => item.trim())
             .filter(item => item.length > 0);
-        let string = `clan matches (${itemsArray.join(" or ")})`;
+        let string = `clan matches (${ itemsArray.join(" or ") })`;
         navigator.clipboard.writeText(string);
         console.log(string);
     };
@@ -53,7 +53,8 @@ rvng
     @import '../theme';
 
     textarea {
-        width: 80%;
+        max-width: 60%;
+        width: 60%;
         height: 10em;
         margin-bottom: 25px;
         border: 2px solid $font;
@@ -74,10 +75,13 @@ rvng
     }
 </style>
 
-<p class="description">Helper for creating a list of clans you wish to receive events for. Saves having to
-    <code>or</code> a bunch of clans.</p>
-<textarea bind:value={itemsInput} placeholder={prompt} on:input={onInputUpdate}></textarea>
+<div class="container">
+    <p class="description">Helper for creating a list of clans you wish to receive events for. Saves having to
+        <code>or</code> a bunch of clans.</p>
+    <textarea bind:value={itemsInput} placeholder={prompt} on:input={onInputUpdate}></textarea>
 
-<code class="copy-preview">{condition}</code>
+    <code class="copy-preview">{condition}</code>
 
-<button on:click={copyEventCondition}>Copy Event Condition</button>
+    <button on:click={copyEventCondition}>Copy Event Condition</button>
+</div>
+
