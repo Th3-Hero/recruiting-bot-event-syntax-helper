@@ -1,6 +1,6 @@
 <script lang="ts">
-    import './shared.scss';
-    import { EventType, generateListCondition, isValidClanTag } from "../lib/lib";
+    import '../shared.scss';
+    import { EventType, generateListCondition, isValidClanTag } from "../../lib/lib";
 
     const prompt = `Enter items separated by commas or on separate lines.
 Example:
@@ -50,7 +50,7 @@ rvng
 </script>
 
 <style lang="scss">
-    @import '../theme';
+    @import '../../theme';
 
     textarea {
         max-width: 60%;

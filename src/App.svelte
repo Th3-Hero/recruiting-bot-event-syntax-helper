@@ -1,21 +1,19 @@
 <script>
-    import ClanEvents from './components/ClanEvents.svelte';
-    import VoteEvents from './components/VoteEvents.svelte';
-    import ClanList from './components/ClanList.svelte';
-    import { writable } from 'svelte/store';
+    import ClanEvents from "./components/ClanEvents.svelte";
+    import VoteEvents from "./components/VoteEventConditions.svelte";
+    import { writable } from "svelte/store";
 
-    const currentPage = writable('home');
+    const currentPage = writable("home");
 
-    const showClanList = () => currentPage.set('clanList');
+    const showClanEvents = () => currentPage.set("clan-events");
 
-    const showClanEvents = () => currentPage.set('clan');
-
-    const showVoteEvents = () => currentPage.set('vote');
+    const showVoteEvents = () => currentPage.set("vote-events");
 
 </script>
 
 <style lang="scss">
     @import "./theme";
+
     .main-container {
         height: 100vh;
         width: 100vw;
@@ -39,17 +37,14 @@
 
 <div class="main-container">
     <div class="navbar">
-        <button on:click={showClanList}>Go to Clan List</button>
         <button on:click={showClanEvents}>Go to Clan Events</button>
         <button on:click={showVoteEvents}>Go to Vote Events</button>
     </div>
 
-    {#if $currentPage === "clanList"}
-        <ClanList />
-    {:else if $currentPage === 'clan'}
-        <ClanEvents />
-    {:else if $currentPage === 'vote'}
-        <VoteEvents />
+    {#if $currentPage === "clan-events"}
+        <ClanEvents/>
+    {:else if $currentPage === "vote-events"}
+        <VoteEvents/>
     {/if}
 
 </div>

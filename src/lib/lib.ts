@@ -1,6 +1,16 @@
 import { parse } from "./parser";
 import { ParsingError } from "./ParsingError";
 
+export const getItemClass = (item: string) => {
+    if (item === "(" || item === ")") {
+        return "parenthesis";
+    } else if (["or", "and"].includes(item)) {
+        return "operator";
+    } else {
+        return "text";
+    }
+};
+
 export const isValidClanTag = (tag: string): boolean => {
     const regex = /^[A-Za-z0-9_-]{2,5}$/;
     return regex.test(tag);

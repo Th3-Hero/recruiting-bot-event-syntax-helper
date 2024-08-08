@@ -38,6 +38,7 @@ button:hover {
     justify-content: center;
     max-width: 100%;
     width: 100%;
+    overflow-x: hidden;
 }
 
 .page-container {
@@ -63,13 +64,14 @@ button:hover {
 }
 
 .sortable-list {
-    padding: 0;
-    margin: 0;
     display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
     justify-content: center;
     align-items: center;
+    padding: 0;
+    margin: 0 25px 0 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .sortable-list li {

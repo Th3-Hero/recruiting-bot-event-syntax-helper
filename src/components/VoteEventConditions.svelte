@@ -2,7 +2,7 @@
     import './shared.scss';
     import { type DndEvent, dndzone, type Item } from 'svelte-dnd-action';
     import { flip } from "svelte/animate";
-    import { buildCondition, EventType, generateListCondition, isValidPlayerName } from "../lib/lib";
+    import { buildCondition, EventType, getItemClass, isValidPlayerName } from "../lib/lib";
     import { onMount } from "svelte";
 
     let items: Item[] = [
@@ -57,16 +57,6 @@
     const copyEventCondition = () => {
         navigator.clipboard.writeText(condition);
         console.log(condition);
-    };
-
-    const getItemClass = (item: string) => {
-        if (item === "(" || item === ")") {
-            return "parenthesis";
-        } else if (options.includes(item)) {
-            return "operator";
-        } else {
-            return "text";
-        }
     };
 
     const sortableUpdate = () => {
