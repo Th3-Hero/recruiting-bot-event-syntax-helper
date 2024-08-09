@@ -14,6 +14,7 @@ rvng
 
     let itemsInput: string = "";
     let condition: string = "Enter clans to see a condition preivew.";
+    let validCondition = true;
 
     const onInputUpdate = () => {
         const itemsArray = itemsInput
@@ -27,14 +28,17 @@ rvng
         for (const item of items) {
             if (!isValidClanTag(item)) {
                 condition = `Invalid clan tag "${ item }". Clan tags are between 2 and 5 characters long and contain only letters, numbers, underscores, and dashes.`
+                validCondition = false;
                 return;
             }
         }
 
         try {
             condition = generateListCondition(items, EventType.CLAN);
+            validCondition = true;
         } catch (e: any) {
             condition = e.message;
+            validCondition = false;
         }
     };
 
@@ -80,8 +84,8 @@ rvng
         <code>or</code> a bunch of clans.</p>
     <textarea bind:value={itemsInput} placeholder={prompt} on:input={onInputUpdate}></textarea>
 
-    <code class="copy-preview">{condition}</code>
+    <code class="copy-preview" class:code-disabled={!validCondition}>{condition}</code>
 
-    <button on:click={copyEventCondition}>Copy Event Condition</button>
+    <button class="copy-button" disabled={!validCondition} on:click={copyEventCondition}>Copy Event Condition</button>
 </div>
 

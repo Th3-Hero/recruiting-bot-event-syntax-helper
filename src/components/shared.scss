@@ -31,6 +31,14 @@ button:hover {
     border-color: $orange;
 }
 
+button:disabled {
+    opacity: 65%;
+    border-color: red;
+}
+button:disabled:hover {
+    border-color: red;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -68,8 +76,6 @@ button:hover {
     justify-content: center;
     align-items: center;
     padding: 0;
-    margin: 0 25px 0 0;
-    width: 100%;
     max-width: 100%;
     overflow-x: auto;
 }
@@ -83,6 +89,25 @@ button:hover {
     margin: 5px;
     background-color: $background-light;
     cursor: move;
+    position: relative;
+    border-radius: 10px;
+}
+
+.outer-list-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+}
+
+.fixed-outer-brackets {
+    font-size: 0.8em;
+    padding: 10px;
+    margin: 5px;
+    background-color: $background-light;
+    cursor: not-allowed;
     position: relative;
     border-radius: 10px;
 }
@@ -132,4 +157,8 @@ code {
     font-family: Consolas, "Courier New", monospace;
     font-size: 0.95em;
     color: $font;
+}
+
+.code-disabled {
+    border: 1px solid red;
 }

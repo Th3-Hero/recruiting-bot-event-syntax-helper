@@ -14,6 +14,7 @@
     const options = ["(", ")", "and", "or"];
     let clanTag = "";
     let condition: string;
+    let validCondition = true;
 
     const handleDndConsider = (e: CustomEvent<DndEvent>) => {
         items = e.detail.items;
@@ -55,8 +56,10 @@
     const sortableUpdate = () => {
         try {
             condition = buildCondition(items.map(item => item.name), EventType.CLAN);
+            validCondition = true;
         } catch (e: any) {
             condition = e.message;
+            validCondition = false;
         }
     }
 
@@ -82,21 +85,30 @@
     </div>
 
     <div class="container">
-        <ul class="sortable-list" use:dndzone="{{items, flipDurationMs}}" on:consider="{handleDndConsider}"
-            on:finalize="{handleDndFinalize}">
-            {#each items as item, index (item.id)}
-                <li class={getItemClass(item.name)} animate:flip="{{duration: flipDurationMs}}">
-                    {item.name}
-                    <button class="remove-button" on:click={() => removeItem(index)}>
-                        <span class="material-symbols-outlined">close</span>
-                    </button>
-                </li>
-            {/each}
-        </ul>
+        <div class="outer-list-container">
+            {#if items.length > 1}
+                <div class="fixed-outer-brackets parenthesis">(</div>
+            {/if}
+            <ul class="sortable-list" use:dndzone="{{items, flipDurationMs}}" on:consider="{handleDndConsider}"
+                on:finalize="{handleDndFinalize}">
+                {#each items as item, index (item.id)}
+                    <li class={getItemClass(item.name)} animate:flip="{{duration: flipDurationMs}}">
+                        {item.name}
+                        <button class="remove-button" on:click={() => removeItem(index)}>
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </li>
+                {/each}
+            </ul>
+            {#if items.length > 1}
+                <div class="fixed-outer-brackets parenthesis">)</div>
+            {/if}
+        </div>
 
-        <code class="copy-preview">{condition}</code>
 
-        <button class="copy-button" on:click={copyEventCondition}>Copy Event Condition</button>
+        <code class="copy-preview" class:code-disabled={!validCondition}>{condition}</code>
+
+        <button class="copy-button" disabled={!validCondition} on:click={copyEventCondition}>Copy Event Condition</button>
     </div>
 </div>
 
