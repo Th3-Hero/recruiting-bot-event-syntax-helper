@@ -20,6 +20,18 @@ describe('clans matches', () => {
     it('(((TAG and TAG) or TAG) and TAG))', () => {
         expect(parse("clans matches (((ExampleClan1 and ExampleClan2) or ExampleClan3) and ExampleClan4)")).toBe(true);
     });
+    it('any (TAG, TAG, TAG)', () => {
+        expect(parse("clans matches any (ExampleClan1, ExampleClan2, ExampleClan3)")).toBe(true);
+    });
+    it('any (TAG, TAG, TAG) and TAG', () => {
+        expect(parse("clans matches (any (ExampleClan1, ExampleClan2, ExampleClan3) and ExampleClan4)")).toBe(true);
+    });
+    it('all (TAG, TAG, TAG)', () => {
+        expect(parse("clans matches all (ExampleClan1, ExampleClan2, ExampleClan3)")).toBe(true);
+    });
+    it('all (TAG, TAG, TAG) or TAG', () => {
+        expect(parse("clans matches (all (ExampleClan1, ExampleClan2, ExampleClan3) or ExampleClan4)")).toBe(true);
+    });
 
     // Invalid
     it('(TAG)', () => {
@@ -51,6 +63,16 @@ describe('clans matches', () => {
     it('TAG or TAG and', () => {
         expect(() => parse("clans matches ExampleClan1 or ExampleClan2 and")).toThrow(ParsingError);
     });
+    it('any TAG, TAG', () => {
+        expect(() => parse("clans matches any ExampleClan1 ExampleClan2")).toThrow(ParsingError);
+    });
+    it('all TAG, TAG', () => {
+        expect(() => parse("clans matches all ExampleClan1 ExampleClan2")).toThrow(ParsingError);
+    });
+    it('any (TAG, TAG) or TAG', () => {
+        expect(() => parse("clans matches any (ExampleClan1, ExampleClan2) or ExampleClan3")).toThrow(ParsingError);
+    });
+
 });
 
 describe('vote matches', () => {

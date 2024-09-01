@@ -4,18 +4,41 @@
 grammar EventCondition;
 
 // Productions
-condition
-    : CLANS MATCHES clanCondition EOF
+eventCondition
+    : CLANS MATCHES condition EOF
     | VOTES MATCHES voteCondition EOF;
 
-clanCondition
-    : LPAREN clanCondition AND clanCondition RPAREN
-    | LPAREN clanCondition OR clanCondition RPAREN
-    | TEXT;
-
 voteCondition
-    : LPAREN voteCondition OR voteCondition RPAREN
-    | TEXT gameServer;
+    : voteOrCondition
+    | playerInfo;
+voteOrCondition
+    : LPAREN voteCondition OR voteCondition RPAREN;
+playerInfo
+    : basicCondition gameServer;
+
+condition
+    : basicCondition
+    | compositeCondition;
+basicCondition
+    : TEXT;
+compositeCondition
+    : andCondition
+    | orCondition
+    | anyCondition
+    | allCondition;
+
+andCondition
+    : LPAREN condition AND condition RPAREN;
+orCondition
+    : LPAREN condition OR condition RPAREN;
+anyCondition
+    : ANY LPAREN basicConditionList RPAREN;
+allCondition
+    : ALL LPAREN basicConditionList RPAREN;
+
+basicConditionList
+    : basicConditionList COMMA basicCondition
+    | basicCondition;
 
 gameServer
     : NA
@@ -27,6 +50,8 @@ gameServer
 // Keywords
 AND options { caseInsensitive=true; }: 'and';
 OR options { caseInsensitive=true; }: 'or';
+ANY options { caseInsensitive=true; }: 'any';
+ALL options { caseInsensitive=true; }: 'all';
 
 MATCHES options { caseInsensitive=true; }: 'matches';
 CLANS options { caseInsensitive=true; }: 'clans';
@@ -38,6 +63,7 @@ ASIA options { caseInsensitive=true; }: 'asia';
 
 LPAREN: '(';
 RPAREN: ')';
+COMMA: ',';
 
 // Symbols
 // Encompasses all characters that are legal in a Wargaming Clan tag and Player name

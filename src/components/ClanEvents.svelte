@@ -1,7 +1,7 @@
 <script>
     import { writable } from "svelte/store";
-    import ClanEventConditions from "./clan-events/ClanEventConditions.svelte";
-    import ClanList from "./clan-events/ClanList.svelte";
+    import ClanEventConditionBuilder from "./clan-events/ClanEventConditionBuilder.svelte";
+    import ClanListGenerator from "./clan-events/ClanListGenerator.svelte";
 
     const currentPage = writable("clan-events");
 
@@ -16,12 +16,12 @@
     }
 </style>
 
-<button class="tabs" on:click={showClanEvents}>Clan Events</button>
-<button class="tabs" on:click={showClanList}>List Generator</button>
+<button class="tabs" on:click={showClanEvents}>Clan Event Builder</button>
+<button class="tabs" on:click={showClanList}>Clan Event List Generator</button>
 
 
 {#if $currentPage === "clan-events"}
-    <ClanEventConditions/>
+    <ClanEventConditionBuilder/>
 {:else if $currentPage === "clan-list"}
-    <ClanList/>
+    <ClanListGenerator/>
 {/if}

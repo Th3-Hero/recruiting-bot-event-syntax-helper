@@ -35,6 +35,7 @@ button:disabled {
     opacity: 65%;
     border-color: red;
 }
+
 button:disabled:hover {
     border-color: red;
 }
@@ -60,15 +61,41 @@ button:disabled:hover {
     display: flex;
     flex-direction: column;
     min-width: 12%;
-    max-width: 15%;
+    max-width: 20%;
+    width: 20%;
     margin-left: 20px;
     margin-right: 20px;
 }
 
-.controls button, .controls input {
+.control-single-button {
     margin-bottom: 15px;
     width: 100%;
     box-sizing: border-box;
+}
+
+.control-block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    width: 100%;
+    background: $background-light;
+    border-radius: 8px;
+    position: relative;
+}
+
+.control-block-add-button {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    margin: 0 10px 0 10px;
+    color: $green;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    right: 5px;
+    position: absolute;
 }
 
 .sortable-list {
@@ -113,7 +140,7 @@ button:disabled:hover {
 }
 
 .remove-button {
-    color: red;
+    color: $red;
     cursor: pointer;
     padding: 0;
     margin: 0 0 0 5px;
@@ -127,7 +154,7 @@ button:disabled:hover {
     margin-top: 20px;
 }
 
-.bracket-buttons {
+.single-condition-button {
     display: flex;
     gap: 5px;
 }
@@ -160,5 +187,5 @@ code {
 }
 
 .code-disabled {
-    border: 1px solid red;
+    border: 1px solid $red;
 }

@@ -2,8 +2,11 @@
     import ClanEvents from "./components/ClanEvents.svelte";
     import VoteEvents from "./components/VoteEventConditions.svelte";
     import { writable } from "svelte/store";
+    import Documentation from "./components/Documentation.svelte";
 
-    const currentPage = writable("home");
+    const currentPage = writable("documentation");
+
+    const showDocumentation = () => currentPage.set("documentation");
 
     const showClanEvents = () => currentPage.set("clan-events");
 
@@ -37,11 +40,15 @@
 
 <div class="main-container">
     <div class="navbar">
-        <button on:click={showClanEvents}>Go to Clan Events</button>
-        <button on:click={showVoteEvents}>Go to Vote Events</button>
+        <button on:click={showDocumentation}>Documentation</button>
+        <button on:click={showClanEvents}>Clan Events</button>
+        <button on:click={showVoteEvents}>Vote Events</button>
     </div>
 
-    {#if $currentPage === "clan-events"}
+
+    {#if $currentPage === "documentation"}
+        <Documentation/>
+    {:else if $currentPage === "clan-events"}
         <ClanEvents/>
     {:else if $currentPage === "vote-events"}
         <VoteEvents/>

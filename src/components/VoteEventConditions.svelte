@@ -2,8 +2,9 @@
     import './shared.scss';
     import { type DndEvent, dndzone, type Item } from 'svelte-dnd-action';
     import { flip } from "svelte/animate";
-    import { buildCondition, EventType, getItemClass, isValidPlayerName } from "../lib/lib";
+    import { buildCondition, EventType, getItemClass } from "../lib/lib";
     import { onMount } from "svelte";
+    import PlayerBlock from "./conditions/blocks/PlayerBlock.svelte";
 
     let items: Item[] = [
         {id: 1, name: "Mascot NA"},
@@ -12,8 +13,7 @@
     ];
     const flipDurationMs = 300;
     const options = ["(", ")", "or"];
-    let playerName = "";
-    let playerRegion = "";
+    let playerValue: string | null = "";
     let condition: string;
     let validCondition = true;
 
@@ -26,28 +26,14 @@
         sortableUpdate();
     };
 
-    const addItem = (name: string) => {
+    const addItem = (name: string | null) => {
+        if (name === null) {
+            alert("Invalid player. Fields cannot be blank. Player names are between 3 and 24 characters long and contain only letters, numbers, underscores, and dashes.");
+            return;
+        }
         const newId = items.length ? Math.max(...items.map(item => item.id)) + 1 : 1;
         items = [...items, {id: newId, name}];
         sortableUpdate();
-    };
-
-    const addPlayerName = () => {
-        if (playerName.trim() === "") {
-            alert("Cannot add player with no name.");
-            return;
-        }
-        if (playerRegion.trim() === "") {
-            alert("Cannot add player with no region");
-            return;
-        }
-        if (!isValidPlayerName(playerName)) {
-            alert("Invalid player name. Player names are between 3 and 24 characters long and contain only letters, numbers, underscores, and dashes.");
-            return;
-        }
-
-        addItem(`${ playerName } ${ playerRegion }`);
-        playerName = "";
     };
 
     const removeItem = (index: number) => {
@@ -73,37 +59,27 @@
     onMount(() => sortableUpdate());
 </script>
 
-<style>
-    select {
-        margin-bottom: 10px;
-    }
-</style>
-
-
-<div class="description"></div>
-
 <div class="page-container">
     <div class="controls">
-        <div class="bracket-buttons">
+        <div class="single-condition-button">
             {#each options as option}
                 {#if option === "(" || option === ")"}
-                    <button on:click={() => addItem(option)}>{option}</button>
+                    <button class="control-single-button" on:click={() => addItem(option)}>{option}</button>
                 {/if}
             {/each}
         </div>
         {#each options as option}
             {#if option !== "(" && option !== ")"}
-                <button on:click={() => addItem(option)}>{option}</button>
+                <button class="control-single-button" on:click={() => addItem(option)}>{option}</button>
             {/if}
         {/each}
-        <input type="text" bind:value={playerName} placeholder="Enter a playername"/>
-        <select bind:value={playerRegion}>
-            <option value="" disabled selected>Select a region</option>
-            <option value="NA">NA</option>
-            <option value="EU">EU</option>
-            <option value="ASIA">ASIA</option>
-        </select>
-        <button on:click={addPlayerName}>Add Player</button>
+
+        <div class="control-block">
+            <PlayerBlock bind:value={playerValue}/>
+            <button class="control-block-add-button" on:click={() => addItem(playerValue)}>
+                <span class="material-symbols-outlined">add</span>
+            </button>
+        </div>
     </div>
 
     <div class="container">
@@ -129,7 +105,8 @@
 
         <code class="copy-preview" class:code-disabled={!validCondition}>{condition}</code>
 
-        <button class="copy-button" disabled={!validCondition} on:click={copyEventCondition}>Copy Event Condition</button>
+        <button class="copy-button" disabled={!validCondition} on:click={copyEventCondition}>Copy Event Condition
+        </button>
     </div>
 
 </div>

@@ -26,22 +26,11 @@ export enum EventType {
     VOTE = "vote matches"
 }
 
-const generateNested = (arr: string[]): string => {
-    if (arr.length === 1) {
-        return arr[0];
-    }
-
-    const firstElement = arr.shift();
-    const restNestedString = generateNested(arr);
-
-    return `(${ firstElement } or ${ restNestedString })`;
-};
-
 /**
  *
  * @throws {ParsingError} Throws an error if failed to generate a valid condition based on the given array.
  */
-export const generateListCondition = (arr: string[], type: EventType): string => {
+export const generateListCondition = (arr: string[], type: EventType): string =>{
     if (arr.length === 0) {
         throw new ParsingError("Condition list is empty");
     }
@@ -50,7 +39,7 @@ export const generateListCondition = (arr: string[], type: EventType): string =>
         parse(condition);
         return condition;
     }
-    let condition = `${ type } ${ generateNested(arr) }`;
+    let condition = `${ type } any (${ arr.join(", ") })`;
     parse(condition);
     return condition;
 };
@@ -63,9 +52,6 @@ export const buildCondition = (arr: string[], type: EventType): string => {
     if (arr.length === 0) {
         throw new ParsingError("Condition list is empty");
     }
-    if (arr.length % 2 === 0) {
-        throw new ParsingError("Invalid condition for parsing");
-    }
 
     if (arr.length === 1) {
         let condition = `${ type } ${ arr[0] }`;
@@ -77,6 +63,8 @@ export const buildCondition = (arr: string[], type: EventType): string => {
     for (let item of arr) {
         if (item === "or" || item === "and") {
             condition += ` ${ item } `;
+        } else if (item.startsWith("and") || item.startsWith("or")) {
+            condition += ` ${ item }`;
         } else {
             condition += item;
         }

@@ -18,6 +18,6 @@ export const parse = (input: string): boolean => {
             throw new ParsingError(msg);
         }
     });
-    parser.condition();
+    parser.eventCondition();
     return true;
 };

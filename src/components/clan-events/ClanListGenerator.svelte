@@ -43,13 +43,10 @@ rvng
     };
 
     const copyEventCondition = () => {
-        const itemsArray = itemsInput
-            .split(/[\n,]+/)
-            .map(item => item.trim())
-            .filter(item => item.length > 0);
-        let string = `clan matches (${ itemsArray.join(" or ") })`;
-        navigator.clipboard.writeText(string);
-        console.log(string);
+        if (validCondition) {
+            navigator.clipboard.writeText(condition);
+            console.log(condition);
+        }
     };
 </script>
 
