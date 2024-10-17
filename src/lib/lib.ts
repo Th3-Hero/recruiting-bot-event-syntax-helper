@@ -27,19 +27,19 @@ export enum EventType {
 }
 
 /**
- *
+ * Generate a condition based on a list of clan tags
  * @throws {ParsingError} Throws an error if failed to generate a valid condition based on the given array.
  */
-export const generateListCondition = (arr: string[], type: EventType): string =>{
+export const generateListCondition = (arr: string[]): string =>{
     if (arr.length === 0) {
         throw new ParsingError("Condition list is empty");
     }
     if (arr.length === 1) {
-        let condition = `${ type } ${ arr[0] }`;
+        let condition = `clans matches ${ arr[0] }`;
         parse(condition);
         return condition;
     }
-    let condition = `${ type } any (${ arr.join(", ") })`;
+    let condition = `clans matches any (${ arr.join(", ") })`;
     parse(condition);
     return condition;
 };
