@@ -29,5 +29,9 @@
   "dependencies": {
     "@types/antlr4": "^4.11.6",
     "antlr4": "^4.13.2"
+  },
+  "resolutions": {
+    "//": "NOTE: vite hasn't updated their esbuild version yet but there is a vulnerability in the current version. This is a workaround until vite updates their esbuild version.",
+    "esbuild": "0.25.0"
   }
 }
