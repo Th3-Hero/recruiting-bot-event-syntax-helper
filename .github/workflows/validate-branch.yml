@@ -14,8 +14,3 @@ jobs:
     uses: Th3-Hero/github-workflows-and-actions/.github/workflows/node-validate.yml@main
     with:
       node-version: "22"
-      env-json: '{
-        "VITE_SERVER_URL": "https://localhost:8080",
-        "LOG_DIRECTORY": "./logs",
-        "PRODUCTION": "false"
-      }'
