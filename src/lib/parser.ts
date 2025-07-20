@@ -1,4 +1,4 @@
-import { CharStreams, CommonTokenStream, type RecognitionException } from 'antlr4';
+import { CharStreams, CommonTokenStream } from 'antlr4';
 import EventConditionParser from '../parser/EventConditionParser';
 import EventConditionLexer from '../parser/EventConditionLexer';
 import { ParsingError } from './ParsingError';
@@ -14,7 +14,13 @@ export const parse = (input: string): boolean => {
 
     parser.removeErrorListeners();
     parser.addErrorListener({
-        syntaxError: (recognizer: any, offendingSymbol: any, line: number, column: number, msg: string, e: RecognitionException) => {
+        syntaxError: (
+            recognizer: unknown,
+            offendingSymbol: unknown,
+            line: number,
+            column: number,
+            msg: string
+        ) => {
             throw new ParsingError(msg);
         }
     });

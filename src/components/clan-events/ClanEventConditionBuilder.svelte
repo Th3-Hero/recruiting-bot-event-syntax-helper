@@ -74,8 +74,12 @@
         try {
             condition = buildCondition(items.map(item => item.name), EventType.CLAN);
             validCondition = true;
-        } catch (e: any) {
-            condition = e.message;
+        } catch (e: unknown) {
+            if (typeof e === "object" && e !== null && "message" in e) {
+                condition = String((e as { message: string }).message);
+            } else {
+                condition = "Unknown error";
+            }
             validCondition = false;
         }
     }
@@ -86,14 +90,14 @@
 <div class="page-container">
     <div class="controls">
         <div class="single-condition-button">
-            {#each options as option}
+            {#each options as option (option)}
                 {#if option !== "and" && option !== "or"}
                     <button class="control-single-button" on:click={() => addItem(option)}>{option}</button>
                 {/if}
             {/each}
         </div>
         <div class="single-condition-button">
-            {#each options as option}
+            {#each options as option (option)}
                 {#if option !== "(" && option !== ")"}
                     <button class="control-single-button" on:click={() => addItem(option)}>{option}</button>
                 {/if}

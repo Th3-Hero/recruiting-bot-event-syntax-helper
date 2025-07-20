@@ -36,8 +36,12 @@ rvng
         try {
             condition = generateListCondition(items, EventType.CLAN);
             validCondition = true;
-        } catch (e: any) {
-            condition = e.message;
+        } catch (e: unknown) {
+            if (typeof e === "object" && e !== null && "message" in e) {
+                condition = String((e as { message: string }).message);
+            } else {
+                condition = "Unknown error";
+            }
             validCondition = false;
         }
     };

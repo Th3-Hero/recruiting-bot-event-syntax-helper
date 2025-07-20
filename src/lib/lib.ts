@@ -35,11 +35,11 @@ export const generateListCondition = (arr: string[]): string =>{
         throw new ParsingError("Condition list is empty");
     }
     if (arr.length === 1) {
-        let condition = `clans matches ${ arr[0] }`;
+        const condition = `clans matches ${ arr[0] }`;
         parse(condition);
         return condition;
     }
-    let condition = `clans matches any (${ arr.join(", ") })`;
+    const condition = `clans matches any (${ arr.join(", ") })`;
     parse(condition);
     return condition;
 };
@@ -54,13 +54,13 @@ export const buildCondition = (arr: string[], type: EventType): string => {
     }
 
     if (arr.length === 1) {
-        let condition = `${ type } ${ arr[0] }`;
+        const condition = `${ type } ${ arr[0] }`;
         parse(condition);
         return condition;
     }
 
     let condition = "";
-    for (let item of arr) {
+    for (const item of arr) {
         if (item === "or" || item === "and") {
             condition += ` ${ item } `;
         } else if (item.startsWith("and") || item.startsWith("or")) {
@@ -69,7 +69,7 @@ export const buildCondition = (arr: string[], type: EventType): string => {
             condition += item;
         }
     }
-    let string = `${ type } (${ condition })`;
+    const string = `${ type } (${ condition })`;
     parse(string);
     return string;
 }
