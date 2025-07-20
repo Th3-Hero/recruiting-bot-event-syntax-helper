@@ -11,7 +11,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json",
-    "test": "vitest"
+    "test:unit": "vitest",
+    "test": "npm run test:unit -- --run"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
