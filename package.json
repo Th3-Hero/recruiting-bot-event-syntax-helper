@@ -2,7 +2,7 @@
   "name": "recruiting-bot-event-syntax-helper",
   "description": "A web-based syntax helper for the Recruiting Bot event parser.",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.0.1",
   "type": "module",
   "scripts": {
     "generate-parser": "java -jar ./src/parser/gen/antlr-4.13.2-complete.jar -Dlanguage=TypeScript -o ./src/parser ./src/parser/gen/EventCondition.g4",
@@ -39,7 +39,6 @@
     "antlr4": "^4.13.2"
   },
   "resolutions": {
-    "//": "NOTE: vite hasn't updated their esbuild version yet but there is a vulnerability in the current version. This is a workaround until vite updates their esbuild version.",
     "esbuild": "0.25.0"
   }
 }
