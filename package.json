@@ -1,7 +1,7 @@
 {
   "name": "recruiting-bot-event-syntax-helper",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "generate-parser": "java -jar ./src/parser/gen/antlr-4.13.2-complete.jar -Dlanguage=TypeScript -o ./src/parser ./src/parser/gen/EventCondition.g4",
