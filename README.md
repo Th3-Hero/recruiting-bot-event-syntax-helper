@@ -1,7 +1,7 @@
 # Recruiting Bot Event Syntax Helper
 
 ## Overview
-The Recruiting Bot Event Syntax Helper is a tool designed to assist users in creating event listeners for the Recruiting Bot application.
+The Recruiting Bot Event Syntax Helper is a tool designed to assist users in creating event listeners for the Recruiting Bot discord application.
 
 ## Features
 - Creation of event listeners for a list of clans
