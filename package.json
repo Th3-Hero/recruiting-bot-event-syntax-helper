@@ -1,5 +1,6 @@
 {
   "name": "recruiting-bot-event-syntax-helper",
+  "description": "A web-based syntax helper for the Recruiting Bot event parser.",
   "private": true,
   "version": "2.0.0",
   "type": "module",
